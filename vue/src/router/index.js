@@ -1,14 +1,21 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from '../views/Dashboard.vue';
+import DefaultLayout from "../components/DefaultLayout.vue";
+
+import Surveys from '../views/Surveys.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 
 
 const routes = [
     {
-        path: '/',
-        name: 'Dashboard',
-        component: Dashboard
+        path: "/",
+        redirect: "/dashboard",
+        component: DefaultLayout,
+        children: [
+            { path: "/dashboard", name: "Dashboard", component: Dashboard },
+            { path: "/surveys", name: "Surveys", component: Surveys },
+        ],
     },
     {
         path: '/login',
