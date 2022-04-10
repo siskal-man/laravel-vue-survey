@@ -1,5 +1,7 @@
 
 <template>
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
+
   <div>
     <img
       class="mx-auto h-12 w-auto"
@@ -12,12 +14,15 @@
     <p class="mt-2 text-center text-sm text-gray-600">
       Or
       {{ " " }}
-      <router-link :to="{name: 'Login'}" class="font-medium text-indigo-600 hover:text-indigo-500">
+      <router-link
+        :to="{ name: 'Login' }"
+        class="font-medium text-indigo-600 hover:text-indigo-500"
+      >
         Login to your account
       </router-link>
     </p>
   </div>
-  <form class="mt-8 space-y-6" action="#" method="POST">
+  <form class="mt-8 space-y-6" @submit="register">
     <input type="hidden" name="remember" value="true" />
     <div class="rounded-md shadow-sm -space-y-px">
       <div>
@@ -28,6 +33,7 @@
           type="text"
           autocomplete="name"
           required=""
+          v-model="user.name"
           class="
             appearance-none
             rounded-none
@@ -57,6 +63,7 @@
           type="email"
           autocomplete="email"
           required=""
+          v-model="user.email"
           class="
             appearance-none
             rounded-none
@@ -68,7 +75,6 @@
             border border-gray-300
             placeholder-gray-500
             text-gray-900
-            
             focus:outline-none
             focus:ring-indigo-500
             focus:border-indigo-500
@@ -86,6 +92,38 @@
           type="password"
           autocomplete="current-password"
           required=""
+          v-model="user.password"
+          class="
+            appearance-none
+            rounded-none
+            relative
+            block
+            w-full
+            px-3
+            py-2
+            border border-gray-300
+            placeholder-gray-500
+            text-gray-900
+            focus:outline-none
+            focus:ring-indigo-500
+            focus:border-indigo-500
+            focus:z-10
+            sm:text-sm
+          "
+          placeholder="Password"
+        />
+      </div>
+      <div>
+        <label for="password_confirmation" class="sr-only"
+          >Password confirmation</label
+        >
+        <input
+          id="password_confirmation"
+          name="password_confirmation"
+          type="password"
+          autocomplete="current-password_confirmation"
+          required=""
+          v-model="user.password_confirmation"
           class="
             appearance-none
             rounded-none
@@ -104,7 +142,7 @@
             focus:z-10
             sm:text-sm
           "
-          placeholder="Password"
+          placeholder="Password confirmation"
         />
       </div>
     </div>
@@ -145,12 +183,29 @@
   </form>
 </template>
 
-<script>
+<script setup>
 import { LockClosedIcon } from "@heroicons/vue/solid";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
-export default {
-  components: {
-    LockClosedIcon,
-  },
+
+
+const store = useStore();
+const router = useRouter();
+const user = {
+  name: "",
+  email: "",
+  password: "",
+  password_confirmation: "",
 };
+
+function register(ev) {
+  ev.preventDefault();
+  store.dispatch("register", user).then((res) => {
+    router.push({
+      name: "Dashboard",
+    });
+  });
+}
+
 </script>
