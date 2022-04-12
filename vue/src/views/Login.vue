@@ -17,7 +17,7 @@
       </router-link>
     </p>
   </div>
-  <form class="mt-8 space-y-6" action="#" method="POST">
+  <form class="mt-8 space-y-6" @submit="login">
     <input type="hidden" name="remember" value="true" />
     <div class="rounded-md shadow-sm -space-y-px">
       <div>
@@ -28,6 +28,7 @@
           type="email"
           autocomplete="email"
           required=""
+          v-model="user.email"
           class="
             appearance-none
             rounded-none
@@ -57,6 +58,7 @@
           type="password"
           autocomplete="current-password"
           required=""
+          v-model="user.password"
           class="
             appearance-none
             rounded-none
@@ -86,6 +88,7 @@
           id="remember-me"
           name="remember-me"
           type="checkbox"
+          v-model="user.remember"
           class="
             h-4
             w-4
@@ -137,12 +140,26 @@
   </form>
 </template>
 
-<script>
+<script setup>
 import { LockClosedIcon } from "@heroicons/vue/solid";
 
-export default {
-  components: {
-    LockClosedIcon,
-  },
+import { useRouter } from "vue-router";
+import store from "../store";
+
+const router = useRouter();
+const user = {
+  email: '',
+  password: '',
+  remember: false
 };
+
+function login(ev){
+  ev.preventDefault();
+  store.dispatch('login', user).then((res) => {
+    router.push({
+      name: "Dashboard"
+    });
+  });
+}
+
 </script>

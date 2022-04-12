@@ -1,7 +1,5 @@
 
 <template>
-  <meta name="csrf-token" content="{{ csrf_token() }}" />
-
   <div>
     <img
       class="mx-auto h-12 w-auto"
@@ -186,11 +184,8 @@
 <script setup>
 import { LockClosedIcon } from "@heroicons/vue/solid";
 import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import store from "../store";
 
-
-
-const store = useStore();
 const router = useRouter();
 const user = {
   name: "",
@@ -207,5 +202,4 @@ function register(ev) {
     });
   });
 }
-
-</script>
+</script>  
