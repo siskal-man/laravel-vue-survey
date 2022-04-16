@@ -4,6 +4,15 @@ import {
 
 import axiosClient from '../axios';
 
+const tmpSurveys = [
+    {
+        id: 100,
+        title: "TheCodeholic YouTube channel content",
+        slug: "thecodeholic-youtube-channel-content",
+        status: "draft",
+        image: ""
+    }
+];
 
 const store = createStore({
     state: {
@@ -36,7 +45,7 @@ const store = createStore({
                     return data;
                 });
         },
-        logout({commit}){
+        logout({ commit }) {
             return axiosClient.post('/logout').then(response => {
                 commit('logout');
                 return response;
