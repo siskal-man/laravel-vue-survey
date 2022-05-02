@@ -261,7 +261,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 import store from "../../store";
 
@@ -274,53 +274,58 @@ const emit = defineEmits(["change", "addQuestion", "deleteQuestion"]);
 
 const model = ref(JSON.parse(JSON.stringify(props.question)));
 
-
 const questionTypes = computed(() => store.state.questionTypes);
 
-function upperCaseFirst(str){
+function upperCaseFirst(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function shouldHaveOptions(){
+function shouldHaveOptions() {
   return ["select", "radio", "checkbox"].includes(model.value.type);
 }
 
-function getOptions(){
+function getOptions() {
   return model.value.data.options;
 }
 
-function setOptions(options){
+function setOptions(options) {
   model.value.data.options = options;
 }
 
-function addOption(){
-  setOptions([
-    ...getOptions(),
-    {uuid: uuidv4(), text: ""},
-  ]);
+function addOption() {
+  setOptions([...getOptions(), { uuid: uuidv4(), text: "" }]);
 
   dataChange();
 }
 
-function removeOption(op){
+function removeOption(op) {
   setOptions(getOptions().filter((opt) => opt !== op));
   dataChange();
 }
 
-function typeChange(){
-  if(shouldHaveOptions()){
+function typeChange() {
+  if (shouldHaveOptions()) {
     setOptions(getOptions() || []);
   }
   dataChange();
 }
 
-function dataChange(){
+function dataChange() {
   const data = model.value;
-  if(!shouldHaveOptions()){
+  if (!shouldHaveOptions()) {
     delete data.data.options;
   }
+
+  emit("change", data);
 }
 
+function addQuestion() {
+  emit("addQuestion", props.index + 1);
+}
+
+function deleteQuestion(){
+  emit("deleteQuestion", props.question);
+}
 
 
 </script>
