@@ -198,9 +198,8 @@
       </div>
 
       <!-- Option list -->
-
       <div
-        v-for="(option, index) in model.data.option"
+        v-for="(option, index) in model.data.options"
         :key="option.uuid"
         class="flex items-center mb-1"
       >
@@ -238,7 +237,7 @@
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-3 w-3 text-red-500"
+            class="h-4 w-4 text-red-500"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -248,7 +247,6 @@
               clip-rule="evenodd"
             />
           </svg>
-          Delete Option
         </button>
         <!-- /Delete Option -->
       </div>
@@ -263,6 +261,8 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { v4 as uuidv4 } from 'uuid';
+
 import store from "../../store";
 
 const props = defineProps({
